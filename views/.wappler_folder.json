@@ -4,7 +4,7 @@
     "description": ""
   },
   "teste2.ejs": {
-    "layoutPage": "",
+    "layoutPage": "index",
     "description": ""
   },
   "index.ejs": {

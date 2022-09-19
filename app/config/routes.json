@@ -11,6 +11,11 @@
     {
       "path": "/",
       "page": "index"
+    },
+    {
+      "path": "/teste2",
+      "page": "teste2",
+      "layout": "index"
     }
   ]
 }
