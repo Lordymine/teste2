@@ -1,0 +1,14 @@
+{
+  "routes": [
+    {
+      "path": "/api/v1/listar",
+      "exec": "/api/listar_usuarios"
+    },
+    {
+      "path": "/",
+      "page": "index",
+      "routeType": "page",
+      "layout": "main"
+    }
+  ]
+}

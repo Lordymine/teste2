@@ -1,0 +1,14 @@
+{
+  "name": "localhost",
+  "module": "dbconnector",
+  "action": "connect",
+  "options": {
+    "client": "mysql",
+    "connection": {
+      "host": "localhost",
+      "user": "root",
+      "database": "teste"
+    }
+  },
+  "fileName": "localhost.json"
+}

@@ -1,0 +1,15 @@
+{
+  "meta": {
+    "$_ENV": [
+      {
+        "type": "text",
+        "name": "PRIVATEKEY"
+      },
+      {
+        "type": "text",
+        "name": "PUBLICKEY"
+      }
+    ]
+  },
+  "exec": {}
+}

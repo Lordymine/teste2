@@ -1,0 +1,68 @@
+{
+  "meta": {
+    "$_ENV": [
+      {
+        "type": "text",
+        "name": "PRIVATEKEY"
+      },
+      {
+        "type": "text",
+        "name": "PUBLICKEY"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "jwt",
+        "module": "jwt",
+        "action": "sign",
+        "options": {
+          "alg": "RS256",
+          "iss": "teste",
+          "sub": "user_id",
+          "aud": "{{UUID}}",
+          "jti": "{{UUID}}",
+          "expiresIn": 999999,
+          "key": "{{$_ENV.PRIVATEKEY.decodeBase64Url()}}"
+        },
+        "outputType": "text"
+      },
+      {
+        "name": "token",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{jwt}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": false
+      },
+      {
+        "name": "verify",
+        "module": "jwt",
+        "action": "verify",
+        "options": {
+          "token": "{{jwt}}",
+          "key": "{{$_ENV.PUBLICKEY}}"
+        },
+        "outputType": "text"
+      },
+      {
+        "name": "token",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{verify}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      }
+    ]
+  },
+  "usedModules": {
+    "jsonwebtoken": "^8.5.1"
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ],
+    "$_ENV": [
+      {
+        "type": "text",
+        "name": "PRIVATEKEY"
+      },
+      {
+        "type": "text",
+        "name": "PUBLICKEY"
+      },
+      {
+        "type": "text",
+        "name": "token"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "jwt",
+        "module": "jwt",
+        "action": "sign",
+        "options": {
+          "alg": "RS256",
+          "iss": "teste",
+          "sub": "user_id",
+          "jti": "{{UUID}}",
+          "expiresIn": 999999,
+          "key": "{{$_ENV.PRIVATEKEY.decodeBase64Url()}}"
+        },
+        "outputType": "text",
+        "disabled": true
+      },
+      {
+        "name": "token",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{jwt}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "disabled": true
+      },
+      {
+        "name": "verify",
+        "module": "jwt",
+        "action": "verify",
+        "options": {
+          "token": "{{$_ENV.token}}",
+          "key": "{{$_ENV.PUBLICKEY}}"
+        },
+        "outputType": "text"
+      },
+      {
+        "name": "token",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{verify}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": false
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{$_GET.token==token}}",
+          "then": {
+            "steps": {
+              "name": "query",
+              "module": "dbconnector",
+              "action": "select",
+              "options": {
+                "connection": "localhost",
+                "sql": {
+                  "type": "SELECT",
+                  "columns": [],
+                  "table": {
+                    "name": "usuarios"
+                  },
+                  "primary": "id",
+                  "joins": [],
+                  "query": "SELECT *\nFROM usuarios",
+                  "params": []
+                }
+              },
+              "output": true,
+              "meta": [
+                {
+                  "type": "number",
+                  "name": "id"
+                },
+                {
+                  "type": "text",
+                  "name": "nome"
+                },
+                {
+                  "type": "text",
+                  "name": "telefone"
+                }
+              ],
+              "outputType": "array"
+            }
+          },
+          "else": {
+            "steps": {
+              "name": "erro",
+              "module": "core",
+              "action": "response",
+              "options": {
+                "status": 401,
+                "data": "Nao autorizado"
+              }
+            }
+          }
+        },
+        "outputType": "boolean"
+      }
+    ]
+  },
+  "usedModules": {
+    "jsonwebtoken": "^8.5.1"
+  }
+}
