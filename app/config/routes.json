@@ -5,14 +5,12 @@
       "exec": "/api/listar_usuarios"
     },
     {
-      "path": "/",
-      "page": "index",
-      "routeType": "page",
-      "layout": "main"
-    },
-    {
       "path": "/teste",
       "page": "teste"
+    },
+    {
+      "path": "/",
+      "page": "index"
     }
   ]
 }

@@ -8,6 +8,10 @@
       {
         "type": "text",
         "name": "dir"
+      },
+      {
+        "type": "text",
+        "name": "token"
       }
     ],
     "$_ENV": [
@@ -18,10 +22,6 @@
       {
         "type": "text",
         "name": "PUBLICKEY"
-      },
-      {
-        "type": "text",
-        "name": "token"
       }
     ]
   },
@@ -34,13 +34,15 @@
         "options": {
           "alg": "RS256",
           "iss": "teste",
-          "sub": "user_id",
           "jti": "{{UUID}}",
           "expiresIn": 999999,
-          "key": "{{$_ENV.PRIVATEKEY.decodeBase64Url()}}"
+          "key": "{{$_ENV.PRIVATEKEY.decodeBase64Url()}}",
+          "claims": {
+            "token": "{{$_GET.token}}"
+          },
+          "sub": "{{$_GET.token}}"
         },
-        "outputType": "text",
-        "disabled": true
+        "outputType": "text"
       },
       {
         "name": "token",
@@ -59,10 +61,11 @@
         "module": "jwt",
         "action": "verify",
         "options": {
-          "token": "{{$_ENV.token}}",
+          "token": "{{$_GET.token}}",
           "key": "{{$_ENV.PUBLICKEY}}"
         },
-        "outputType": "text"
+        "outputType": "text",
+        "disabled": true
       },
       {
         "name": "token",
@@ -80,7 +83,7 @@
         "module": "core",
         "action": "condition",
         "options": {
-          "if": "{{$_GET.token==token}}",
+          "if": "{{$_GET.token}}",
           "then": {
             "steps": {
               "name": "query",

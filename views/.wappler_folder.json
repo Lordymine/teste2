@@ -6,5 +6,9 @@
   "teste2.ejs": {
     "layoutPage": "",
     "description": ""
+  },
+  "index.ejs": {
+    "layoutPage": "",
+    "description": ""
   }
 }
